@@ -17,7 +17,7 @@ exports.forgetPass = async(req,res)=>{
      
         const token = await crypto.randomUUID();
       
-        const url = `http://localhost:3000/update-password/${token}`;
+        const url = `https://quicklearn121.vercel.app//update-password/${token}`;
         validUser = await User.findOneAndUpdate({email},{token : token,reset_pass_expiry : Date.now() + 5 * 60 * 1000},{new : true})
 
         await nodeMailer(email,'Reset link',url);
