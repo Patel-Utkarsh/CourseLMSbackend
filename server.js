@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use(
 	cors({
-		origin:"https://quicklearn123.netlify.app",
+		origin:"https://quicklearn121.vercel.app",
 		credentials:true,
 	})
 )
