@@ -4,21 +4,26 @@ const { instance } = require("../Config/razorpay");
 const User = require("../Models/User");
 
 exports.createOrder = async(req,res) =>{
-    const {id} = req.user;
-    const {course_id} = req.body;
+  
+    const {id,course_id} = req.body;
+;
 
     try {
 
         const uid = new  mongoose.Types.ObjectId(id);
+       // console.log(uid)
 
-        if(await Course.studentEnrolled.includes(uid)) {
+        const courseDetails = await Course.findById(course_id);
+
+        if(await courseDetails.studentEnrolled.includes(course_id)) {
             res.status(500).json({
                 success  : false,
                 message  : 'Course already bought by user'
             })
         }
 
-        const courseDetails = await Course.findById(course_id);
+       
+       // console.log(courseDetails)
 
         const amount = courseDetails.price;
         const currency = "INR";
@@ -30,19 +35,26 @@ exports.createOrder = async(req,res) =>{
             notes : {
                 courseId : course_id,
                 userId : id
-            }
+            },
+
+            
         }
 
         try{
             const paymentResponse = await instance.orders.create(options);
             res.status(200).json({
                 success  : true,
-                courseName : courseDetails.courseName,
-                courseDes : courseDetails.courseDescription,
-                thumbnail  :courseDetails.thumbnail,
-                orderId : paymentResponse.id,
-                currency : paymentResponse.currency,
-                amount : paymentResponse.amount
+                options : {
+                    name : courseDetails.courseName,
+                    image  :courseDetails.thumbnail,
+                    orderId : paymentResponse.id,
+                    currency : paymentResponse.currency,
+                    amount : paymentResponse.amount,
+                    key : 'rzp_test_wstLCIqX2bkcId',
+                    notes : options.notes
+
+                }
+               
             })
 
         }
@@ -50,7 +62,7 @@ exports.createOrder = async(req,res) =>{
         catch(err){
             res.status(500).json({
                 success  : false,
-                message  : 'failed in interacting with razorpay'
+                message  : err.message
             })
             
 
@@ -65,41 +77,37 @@ exports.createOrder = async(req,res) =>{
     catch(err){
         res.status(500).json({
             success  : false,
-            message  : 'failed in creating an order'
+            message  : err.message
         })
 
     }
 }
 
 exports.verifySignature = async(req,res) => {
-    const webHookSecret = "123456789";
-    const signature = req.headers["x-razorpay-signature"];
-    const shasum = crypto.createHmac("sha256",webHookSecret);
-    shasum.update(JSON.stringify(req.body));
-    const digest = shasum.digest("hex");
+ 
 
     try{
-        if(signature === digest) {
+        
             console.log('payment is authorized');
     
-            const {courseId,userId} = req.body.payload.payment.entity.notes;
+            const {courseId,userId} = req.body;
     
-            await User.findByIdAndUpdate({id : userId},{$push:{courses : courseId}});
-            await Course.findByIdAndUpdate({id : courseId},{$push:{studentEnrolled : userId}});
+            await User.findByIdAndUpdate({_id : userId},{$push:{courses : courseId}});
+            await Course.findByIdAndUpdate({_id : courseId},{$push:{studentEnrolled : userId}});
             res.status(200).json({
                 success  : true,
                 message  : 'payment made successfully'
             })
             
     
-        }
+        
 
     }
 
     catch(err) {
         res.status(500).json({
             success  : false,
-            message  : 'order coulnt be placed'
+            message  : err.message
         })
 
     }
