@@ -47,7 +47,7 @@ exports.forgetPass = async(req,res)=>{
 
 exports.resetPass = async (req,res) => {
     const {token,password} = req.body;
-   console.log(token,password);
+
 
     try {
         let validUser = await User.findOne({token});
