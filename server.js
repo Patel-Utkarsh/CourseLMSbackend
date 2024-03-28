@@ -14,12 +14,16 @@ app.use(cookieParser());
 
 app.use(express.json());
 
+app.use(function (req, res, next) {
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   next();
+})
+
 app.use(
 	cors({
 		origin:"https://quicklearn121.vercel.app",
 		credentials:true,
-		 allowedHeaders: ['Content-Type', 'Authorization'],
-    		exposedHeaders: ['Content-Length', 'Authorization']
 	})
 )
 
