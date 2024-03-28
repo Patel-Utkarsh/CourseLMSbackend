@@ -18,6 +18,8 @@ app.use(
 	cors({
 		origin:"https://quicklearn121.vercel.app",
 		credentials:true,
+		 allowedHeaders: ['Content-Type', 'Authorization'],
+    		exposedHeaders: ['Content-Length', 'Authorization']
 	})
 )
 
