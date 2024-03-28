@@ -56,6 +56,8 @@ routes.put('/api/v1/deleteSection',deleteSection);
 routes.put('/api/v1/deleteSubSection',deleteSubsection);
 routes.put('/api/v1/updateProfile',updateUserProfile);
 routes.post('/api/v1/getVideoData',getSubSectionData);
+routes.post('/api/v1/createOrder',createOrder);
+routes.post('/api/v1/verifySignature',verifySignature);
 
 
 
