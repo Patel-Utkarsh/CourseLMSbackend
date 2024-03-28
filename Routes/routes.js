@@ -15,6 +15,9 @@ const { AddToCart, DeleteFromCart } = require("../Controllers/cartCrud");
 const { getUserDetails } = require("../Controllers/userDetails");
 const { createSubsection, updateSubsection, deleteSubsection, getSubSectionData } = require("../Controllers/subSection");
 const { updateUserProfile } = require("../Controllers/userProfile");
+const { createOrder, verifySignature } = require("../Controllers/payment");
+
+
 
 routes.post('/api/v1/signUp',signUp);
 routes.post('/api/v1/login',logIn);
