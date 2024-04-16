@@ -61,7 +61,7 @@ routes.put('/api/v1/updateProfile',updateUserProfile);
 routes.post('/api/v1/getVideoData',getSubSectionData);
 routes.post('/api/v1/createOrder',createOrder);
 routes.post('/api/v1/verifySignature',verifySignature);
-route.get('/api/cj',cronJob);
+routes.get('/api/cj',cronJob);
 
 
 
