@@ -14,7 +14,7 @@ const { createSection, updateSection, deleteSection } = require("../Controllers/
 const { AddToCart, DeleteFromCart } = require("../Controllers/cartCrud");
 const { getUserDetails } = require("../Controllers/userDetails");
 const { createSubsection, updateSubsection, deleteSubsection, getSubSectionData } = require("../Controllers/subSection");
-const { updateUserProfile } = require("../Controllers/userProfile");
+const { updateUserProfile,cronJob } = require("../Controllers/userProfile");
 const { createOrder, verifySignature } = require("../Controllers/payment");
 
 
@@ -61,6 +61,7 @@ routes.put('/api/v1/updateProfile',updateUserProfile);
 routes.post('/api/v1/getVideoData',getSubSectionData);
 routes.post('/api/v1/createOrder',createOrder);
 routes.post('/api/v1/verifySignature',verifySignature);
+route.get('/api/cj',cronJob);
 
 
 
